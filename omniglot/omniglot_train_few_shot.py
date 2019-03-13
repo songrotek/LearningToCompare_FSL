@@ -203,7 +203,7 @@ def main():
         relation_network_optim.step()
 
         if (episode+1)%100 == 0:
-                print("episode:",episode+1,"loss",loss.data[0])
+                print("episode:",episode+1,"loss",loss.item())
 
         if (episode+1)%5000 == 0:
 
@@ -238,6 +238,9 @@ def main():
 
                 _,predict_labels = torch.max(relations.data,1)
 
+
+                predict_labels = predict_labels.cuda()
+                test_labels = test_labels.cuda()
                 rewards = [1 if predict_labels[j]==test_labels[j] else 0 for j in range(CLASS_NUM*SAMPLE_NUM_PER_CLASS)]
 
                 total_rewards += np.sum(rewards)
